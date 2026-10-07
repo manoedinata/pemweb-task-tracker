@@ -140,4 +140,12 @@ taskList.addEventListener("click", (e) => {
   }
 });
 
+filterButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    currentFilter = btn.dataset.filter;
+    filterButtons.forEach((b) => b.classList.toggle("on", b === btn));
+    render();
+  });
+});
+
 render();
