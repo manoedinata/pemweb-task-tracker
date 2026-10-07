@@ -122,4 +122,22 @@ form.addEventListener("submit", (e) => {
   render();
 });
 
+taskList.addEventListener("click", (e) => {
+  const li = e.target.closest(".task-item");
+  if (!li) return;
+  const id = li.dataset.id;
+
+  if (e.target.classList.contains("delete-btn")) {
+    tasks = tasks.filter((t) => t.id !== id);
+    render();
+    return;
+  }
+
+  if (e.target.classList.contains("toggle-checkbox")) {
+    const task = tasks.find((t) => t.id === id);
+    if (task) task.selesai = e.target.checked;
+    render();
+  }
+});
+
 render();
