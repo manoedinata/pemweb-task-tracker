@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Tracker Kuliah</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="card">
+    <h1>📋 Task Tracker Kuliah</h1>
+
+    <form id="task-form" novalidate>
+      <input
+        type="text"
+        id="judul"
+        name="judul"
+        placeholder="Judul tugas (min. 3 karakter)"
+      />
+
+      <div class="form-row">
+        <select id="matkul" name="matkul">
+          <option value="Pemrograman Web">Pemrograman Web</option>
+          <option value="Basis Data">Basis Data</option>
+          <option value="Struktur Data">Struktur Data</option>
+          <option value="Jaringan Komputer">Jaringan Komputer</option>
+          <option value="Lainnya">Lainnya</option>
+        </select>
+        <input type="date" id="deadline" name="deadline" />
+        <button type="submit">Tambah</button>
+      </div>
+
+      <p id="form-error" class="error" hidden></p>
+    </form>
+
+    <div class="filter-row">
+      <div class="filters">
+        <button type="button" class="filter-btn on" data-filter="semua">Semua</button>
+        <button type="button" class="filter-btn" data-filter="aktif">Aktif</button>
+        <button type="button" class="filter-btn" data-filter="selesai">Selesai</button>
+      </div>
+      <span id="counter"></span>
+    </div>
+
+    <ul id="task-list"></ul>
+    <p id="empty-message" class="empty-message" hidden>Belum ada tugas. Tambahkan tugas pertamamu!</p>
+  </main>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
