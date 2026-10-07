@@ -9,7 +9,22 @@ const emptyMessage = document.getElementById("empty-message");
 const counter = document.getElementById("counter");
 const filterButtons = document.querySelectorAll(".filter-btn");
 
-let tasks = [];
+const STORAGE_KEY = "task-tracker-kuliah";
+
+function loadTasks() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveTasks() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+}
+
+let tasks = loadTasks();
 let currentFilter = "semua";
 
 function formatDeadline(dateStr) {
@@ -23,9 +38,11 @@ function formatDeadline(dateStr) {
 }
 
 function getVisibleTasks() {
-  if (currentFilter === "aktif") return tasks.filter((t) => !t.selesai);
-  if (currentFilter === "selesai") return tasks.filter((t) => t.selesai);
-  return tasks;
+  let visible = tasks;
+  if (currentFilter === "aktif") visible = tasks.filter((t) => !t.selesai);
+  if (currentFilter === "selesai") visible = tasks.filter((t) => t.selesai);
+
+  return [...visible].sort((a, b) => a.deadline.localeCompare(b.deadline));
 }
 
 function render() {
@@ -117,6 +134,7 @@ form.addEventListener("submit", (e) => {
     selesai: false,
   });
 
+  saveTasks();
   form.reset();
   judulInput.focus();
   render();
@@ -129,6 +147,7 @@ taskList.addEventListener("click", (e) => {
 
   if (e.target.classList.contains("delete-btn")) {
     tasks = tasks.filter((t) => t.id !== id);
+    saveTasks();
     render();
     return;
   }
@@ -136,6 +155,7 @@ taskList.addEventListener("click", (e) => {
   if (e.target.classList.contains("toggle-checkbox")) {
     const task = tasks.find((t) => t.id === id);
     if (task) task.selesai = e.target.checked;
+    saveTasks();
     render();
   }
 });
