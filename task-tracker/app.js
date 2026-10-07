@@ -76,4 +76,50 @@ function render() {
   counter.textContent = `${aktifCount} tugas aktif`;
 }
 
+function showError(message) {
+  if (!message) {
+    formError.hidden = true;
+    formError.textContent = "";
+    return;
+  }
+  formError.hidden = false;
+  formError.textContent = message;
+}
+
+function generateId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const judul = judulInput.value.trim();
+  const matkul = matkulInput.value;
+  const deadline = deadlineInput.value;
+
+  if (judul.length < 3) {
+    showError("Judul tugas minimal 3 karakter.");
+    return;
+  }
+
+  if (!deadline) {
+    showError("Deadline wajib diisi.");
+    return;
+  }
+
+  showError(null);
+
+  tasks.push({
+    id: generateId(),
+    judul,
+    matkul,
+    deadline,
+    selesai: false,
+  });
+
+  form.reset();
+  judulInput.focus();
+  render();
+});
+
 render();
